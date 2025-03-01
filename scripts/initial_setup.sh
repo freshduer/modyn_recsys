@@ -1,7 +1,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PARENT_DIR=$(realpath ${DIR}/../)
 CONFIGURED_FILE="${PARENT_DIR}/.modyn_configured"
-
+echo ${CONFIGURED_FILE}
 pushd $PARENT_DIR
 
 # Check whether Modyn has already been configured for this system

@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.22)
+set(CMAKE_C_COMPILER "/usr/local/gcc/gcc-11.2.0/bin/gcc")
+set(CMAKE_CXX_COMPILER "/usr/local/gcc/gcc-11.2.0/bin/g++")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 project(modyn)
 
 message(STATUS "Hello, this is Modyn.")
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(MODYN_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 ##### BUILD TYPES #####
@@ -58,6 +62,12 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   list(APPEND MODYN_COMPILE_OPTIONS "-Wno-missing-requires" "-Wno-unknown-warning-option") # causes issues since gcc 12 and grpc 1.69
+  execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} --version
+    OUTPUT_VARIABLE GCC_VERSION_OUTPUT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  message(STATUS "GCC Version: ${GCC_VERSION_OUTPUT}")
 endif()
 
 
