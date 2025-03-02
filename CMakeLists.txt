@@ -115,7 +115,10 @@ add_library(modyn)
 
 ### Obtain (Native) Compile Flags and Definitions ###
 include(${MODYN_CMAKE_DIR}/system_info.cmake)
-
+set(PostgreSQL_LIBRARY "/home/comp/csstchen/.conda/envs/modyn2/lib")
+set(PostgreSQL_INCLUDE_DIR "/home/comp/csstchen/.conda/envs/modyn2/include")
+# 设置 Conda 环境的库路径
+set(CMAKE_PREFIX_PATH "/home/comp/csstchen/.conda/envs/modyn2")
 ##### DEPENDENCIES #####
 include(${MODYN_CMAKE_DIR}/dependencies.cmake)
 

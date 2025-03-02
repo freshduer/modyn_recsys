@@ -90,3 +90,9 @@ libbuild/
 .env
 
 exploration/
+
+datasets/*
+dac/*
+*.npy
+evaluation_results/*
+models/*

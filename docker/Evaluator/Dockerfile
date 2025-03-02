@@ -1,8 +1,8 @@
-# FROM modynapex:latest as apex-image
+FROM modynapex:latest as apex-image
 
 FROM modynbase:latest AS evaluatorimage
 
-# COPY --from=apex-image /opt/mamba/envs/modyn /opt/mamba/envs/modyn
+COPY --from=apex-image /opt/mamba/envs/modyn /opt/mamba/envs/modyn
 
 RUN chmod a+x /src/modyn/evaluator/modyn-evaluator
 

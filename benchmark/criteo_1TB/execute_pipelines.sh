@@ -3,6 +3,7 @@
 BASEDIR="/modyn_host/paper_eval/criteo_$(date +%s)"
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+# /home/comp/csstchen/orion-yuwenjun/modyn/benchmark/criteo_1TB
 MODYN_CONFIG_PATH="$SCRIPT_DIR/../../modyn/config/examples/modyn_config.yaml"
 
 for filename in $SCRIPT_DIR/pipelines/*.yml; do

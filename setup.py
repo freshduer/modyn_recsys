@@ -91,7 +91,7 @@ class CMakeBuild(build_ext):
                 "-DCMAKE_BUILD_TYPE=%s" % cfg,
                 "-DMODYN_BUILD_PLAYGROUND=Off",
                 "-DMODYN_BUILD_TESTS=Off",
-                "-DMODYN_BUILD_STORAGE=Off",
+                "-DMODYN_BUILD_STORAGE=on",
                 "-DMODYN_TEST_COVERAGE=Off",
             ]
 

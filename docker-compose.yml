@@ -99,14 +99,14 @@ services:
   #      - .:/modyn_host
   #    shm_size: 4gb
   # CUDASTART (ignore/delete if enabling cuda manually)
-  #    runtime: nvidia
-  #    deploy:
-  #      resources:
-  #        reservations:
-  #          devices:
-  #            - driver: nvidia
-  #              count: 1
-  #              capabilities: [gpu, utility, compute]
+      runtime: nvidia
+      deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: 1
+                capabilities: [gpu, utility, compute]
   # CUDAEND (ignore/delete if enabling cuda manually)
   selector:
     restart: on-failure

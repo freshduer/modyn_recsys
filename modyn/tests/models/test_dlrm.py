@@ -1,7 +1,7 @@
 import torch
-
 from modyn.models.dlrm.dlrm import DLRM
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 def get_dlrm_configuration():
     return {
@@ -43,35 +43,32 @@ def get_dlrm_configuration():
         },
     }
 
-
 def get_order_list():
     return [19, 0, 21, 9, 20, 10, 22, 11, 1, 4, 2, 23, 14, 3, 6, 13, 7, 17, 15, 24, 8, 25, 18, 12, 5, 16]
 
-
 def test_dlrm_init():
-    model = DLRM(get_dlrm_configuration(), "cpu", False)
-
-    assert torch.equal(model.model._embedding_ordering, torch.tensor(get_order_list()))
+    model = DLRM(get_dlrm_configuration(), device, False)
+    
+    assert torch.equal(model.model._embedding_ordering.to(device), torch.tensor(get_order_list(), device=device))
     data = {
-        "numerical_input": torch.ones((64, 13), dtype=torch.float32),
-        "categorical_input": torch.ones((64, 26), dtype=torch.long),
+        "numerical_input": torch.ones((64, 13), dtype=torch.float32, device=device),
+        "categorical_input": torch.ones((64, 26), dtype=torch.long, device=device),
     }
     model.model(data)
 
-
 def test_dlrm_reorder_categorical_input():
-    model = DLRM(get_dlrm_configuration(), "cpu", False)
+    model = DLRM(get_dlrm_configuration(), device, False)
 
-    test_data = torch.tensor(list(range(26, 52)), dtype=torch.long).expand(64, -1)
-    input_data = torch.tensor([x + 26 for x in get_order_list()], dtype=torch.long).expand(64, -1)
+    test_data = torch.tensor(list(range(26, 52)), dtype=torch.long, device=device).expand(64, -1)
+    input_data = torch.tensor([x + 26 for x in get_order_list()], dtype=torch.long, device=device).expand(64, -1)
     reordered_test_data = model.model.reorder_categorical_input(test_data)
+    
     assert reordered_test_data.shape == (64, 26)
     assert reordered_test_data.dtype == torch.long
     assert torch.equal(reordered_test_data, input_data)
 
-
 def test_get_last_layer():
-    net = DLRM(get_dlrm_configuration(), "cpu", False)
+    net = DLRM(get_dlrm_configuration(), device, False)
     last_layer = net.model.get_last_layer()
 
     assert isinstance(last_layer, torch.nn.Linear)
@@ -80,13 +77,12 @@ def test_get_last_layer():
     assert last_layer.bias.shape == (1,)
     assert last_layer.weight.shape == (1, 16)
 
-
 def test_dlrm_no_side_effect():
-    model = DLRM(get_dlrm_configuration(), "cpu", False)
+    model = DLRM(get_dlrm_configuration(), device, False)
 
     data = {
-        "numerical_input": torch.ones((64, 13), dtype=torch.float32),
-        "categorical_input": torch.ones((64, 26), dtype=torch.long),
+        "numerical_input": torch.ones((64, 13), dtype=torch.float32, device=device),
+        "categorical_input": torch.ones((64, 26), dtype=torch.long, device=device),
     }
     out_off = model.model(data)
     model.model.embedding_recorder.record_embedding = True
@@ -94,13 +90,12 @@ def test_dlrm_no_side_effect():
 
     assert torch.equal(out_on, out_off)
 
-
 def test_shape_embedding_recorder():
-    model = DLRM(get_dlrm_configuration(), "cpu", False)
+    model = DLRM(get_dlrm_configuration(), device, False)
 
     data = {
-        "numerical_input": torch.ones((64, 13), dtype=torch.float32),
-        "categorical_input": torch.ones((64, 26), dtype=torch.long),
+        "numerical_input": torch.ones((64, 13), dtype=torch.float32, device=device),
+        "categorical_input": torch.ones((64, 26), dtype=torch.long, device=device),
     }
     model.model(data)
     assert model.model.embedding is None
